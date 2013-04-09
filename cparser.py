@@ -74,14 +74,6 @@ class ParseCppComment:
         
 class CppParser(object):
     def __init__(self):
-        self.OnCppComment = lambda x: self.OnText(x)
-        self.OnCComment = lambda x: self.OnText(x)
-        self.OnCloseBlock = lambda x: self.OnText(x)
-        self.OnOpenBlock = lambda x: self.OnText(x)
-        self.OnStatement = lambda x: self.OnText(x)
-        self.OnDirective = lambda x: self.OnText(x)
-        self.OnWhitespace = lambda x: self.OnText(x)
-        self.OnError = lambda x: self.OnText(x)
         self.parsers = \
         [
             (ParseCppComment(), lambda x: self.OnCppComment(x)),
@@ -113,5 +105,19 @@ class CppParser(object):
         self.OnError(str[index])
         return (-1, str)
         
-    def OnText(self, s):
+    def OnCppComment(self, s):
+        return s
+    def OnCComment(self, s):
+        return s
+    def OnCloseBlock(self, s):
+        return s
+    def OnOpenBlock(self, s):
+        return s
+    def OnStatement(self, s):
+        return s
+    def OnDirective(self, s):
+        return s
+    def OnWhitespace(self, s):
+        return s
+    def OnError(self, s):
         return s
