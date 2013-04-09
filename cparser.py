@@ -84,26 +84,33 @@ class CppParser(object):
             (ParseStatement(), lambda x: self.OnStatement(x))
         ]
         
-        
     def parse(self, str):
+        self.__parse(str, lambda x: x)
+        
+    def __parse(self, str, f):
         index = 0
         while index < len(str):
             if (str[index] in string.whitespace):
-                self.OnWhitespace(str[index])
+                f(self.OnWhitespace(str[index]))
                 index = index + 1
             else:     
-                i, s = self.sub_parse(str, index)
+                i, s = self.__sub_parse(str, index, f)
                 if (i == -1): index = index + 1
                 else: index = i
                 
-    def sub_parse(self, str, index):
+    def __sub_parse(self, str, index, f):
         for parser, callback in self.parsers:
             i, s = parser.parse(str, index)
             if (i != -1):
-                callback(s)
+                f(callback(s))
                 return (i, s)
         self.OnError(str[index])
         return (-1, str)
+
+    def transform(self, str):
+        out = []
+        self.__parse(str, lambda x: out.append(x))
+        return ''.join(out)
         
     def OnCppComment(self, s):
         return s
