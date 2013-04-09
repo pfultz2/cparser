@@ -72,7 +72,7 @@ class ParseCppComment:
         return (-1, str)
         
         
-class CppParser:
+class CppParser(object):
     def __init__(self):
         self.OnCppComment = lambda x: self.OnText(x)
         self.OnCComment = lambda x: self.OnText(x)
